@@ -1,0 +1,10 @@
+C:\Users\jtren\git\Dangerzone-Launcher\DangerZoneLauncher\DangerZoneLauncher\bin\Debug\DangerZoneLauncher.exe.config
+C:\Users\jtren\git\Dangerzone-Launcher\DangerZoneLauncher\DangerZoneLauncher\bin\Debug\DangerZoneLauncher.exe
+C:\Users\jtren\git\Dangerzone-Launcher\DangerZoneLauncher\DangerZoneLauncher\bin\Debug\DangerZoneLauncher.pdb
+C:\Users\jtren\git\Dangerzone-Launcher\DangerZoneLauncher\DangerZoneLauncher\obj\Debug\DangerZoneLauncher.csprojAssemblyReference.cache
+C:\Users\jtren\git\Dangerzone-Launcher\DangerZoneLauncher\DangerZoneLauncher\obj\Debug\DangerZoneLauncher.Form1.resources
+C:\Users\jtren\git\Dangerzone-Launcher\DangerZoneLauncher\DangerZoneLauncher\obj\Debug\DangerZoneLauncher.Properties.Resources.resources
+C:\Users\jtren\git\Dangerzone-Launcher\DangerZoneLauncher\DangerZoneLauncher\obj\Debug\DangerZoneLauncher.csproj.GenerateResource.cache
+C:\Users\jtren\git\Dangerzone-Launcher\DangerZoneLauncher\DangerZoneLauncher\obj\Debug\DangerZoneLauncher.csproj.CoreCompileInputs.cache
+C:\Users\jtren\git\Dangerzone-Launcher\DangerZoneLauncher\DangerZoneLauncher\obj\Debug\DangerZoneLauncher.exe
+C:\Users\jtren\git\Dangerzone-Launcher\DangerZoneLauncher\DangerZoneLauncher\obj\Debug\DangerZoneLauncher.pdb
