@@ -74,7 +74,7 @@ class gui {
   	 
 	static UnzipUtility unzipper = new UnzipUtility();
 	
-	static String[] dz_versions = { "Latest", "2.1", "1.9.3", "1.9", "1.8b", "1.8a", "1,7", "1.7b", "1.6", "1.0", "0.9", "0.8"};
+	static String[] dz_versions = { "Latest", "2.1", "1.9.3", "1.9", "1.8b", "1.8a", "1.7", "1.7b", "1.6", "1.0", "0.9", "0.8"};
 	
  public static void main(String args[]) throws IOException {
 
