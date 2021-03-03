@@ -24,19 +24,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 class gui {
 	
+	//Get the operating system
+	
+	
     private static JEditorPane editor;
-    private static JScrollPane scroll;
     private static URL url;
     public static String title = "DangerZone Launcher - By: jtrent238";
 	private static String URL = "https://dzarchive.jtrent238.tk";
-	private static String dzpath = System.getenv("APPDATA") + "\\DangerZone\\";
-	private static String dzprop = dzpath + "/" + "DangerZone.Properties";
+	//private static String dzpath = System.getenv("APPDATA") + "\\DangerZone\\";
+	private static String dzpath = null;
+	//private static String dzprop = dzpath + "\\" + "DangerZone.Properties";
+	public static String dzprop = null;
 	public static String playername = "Player";
 	public static String playerpassword = "";
 	public static String errstring = null;
@@ -44,10 +49,8 @@ class gui {
 	public static String dzlatest = "2.1";
 	
 	private static String dz_21 = "http://www.dangerzonegame.net/uploads/2/5/3/5/25358181/dangerzone_2.1.zip";
-	private static String dz_20 = "version_link";
 	private static String dz_193 = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_1.9.3.zip";
 	private static String dz_19 = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_1.9.zip";
-	private static String dz_18 = "version_link";
 	private static String dz_18b = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_1.8b.zip";
 	private static String dz_18a = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_1.8a.zip";
 	private static String dz_17 = "https://www.dropbox.com/s/qzue8fvgfhio9ol/dangerzone_1.7.zip?dl=1";
@@ -58,10 +61,8 @@ class gui {
 	private static String dz_08 = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_0.8.zip";
 
 	private static String ver21 = "2.1";
-	private static String ver20 = "2.0";
 	private static String ver193 = "1.9.3";
 	private static String ver19 = "1.9";
-	private static String ver18 = "1.8";
 	private static String ver18b = "1.8b";
 	private static String ver18a = "1.8a";
 	private static String ver17 = "1.7";
@@ -75,9 +76,25 @@ class gui {
 	static UnzipUtility unzipper = new UnzipUtility();
 	
 	static String[] dz_versions = { "Latest", "2.1", "1.9.3", "1.9", "1.8b", "1.8a", "1.7", "1.7b", "1.6", "1.0", "0.9", "0.8"};
-	
+
  public static void main(String args[]) throws IOException {
 
+	 try {
+		  System.out.println("Running: " + System.getProperty("os.name") + " " + System.getProperty("os.arch"));
+		  } catch (Exception e) {
+		    System.out.println(e.getMessage());
+		  }
+		  
+	 try {
+		 if(System.getProperty("os.name") != "Windows") {
+			 dzpath = System.getProperty("user.home")  + "/DangerZone/";
+			 dzprop = dzpath + "DangerZone.Properties";
+		 }
+	 } catch (Exception e) {
+		 System.out.println(e.getMessage());
+	 }
+	 
+	 
 	 System.out.println("DangerZone Path: " + dzpath);
 	 System.out.println(dzprop);
 	 
@@ -150,9 +167,7 @@ class gui {
      //panel.add(textfieldPassword);
      //panel.add(btnLogin);
 
-     // Text Area at the Center
-     JTextArea ta = new JTextArea();
-     //add scroll pane to jframe center
+     new JTextArea();
 
      //Adding Components to the frame.
      frame.getContentPane().add(BorderLayout.SOUTH, panel);
@@ -288,12 +303,31 @@ class gui {
 	        	 
 	             try {
 	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever19 + ".zip", dzpath + "\\dangerzone_" + casever19);
+	                 unzipper.unzip(dzpath + "/dangerzone_" + casever19 + ".zip", dzpath + "dangerzone_" + casever19);
 	                 progressBar.setValue(progressBar.getValue() + 2);
 				     progressBar.update(progressBar.getGraphics());
 	             } catch (Exception ex) {
 	                 // some errors occurred
 	                 ex.printStackTrace();
+	             }
+	             if(System.getProperty("os.name") != "Windows") {
+	            	 try {
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/libjinput-linux.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/libjinput-linux.so"));
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/liblwjgl.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/liblwjgl.so"));
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/liblwjgl64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/liblwjgl64.so"));
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/libopenal.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/libopenal.so"));
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/libopenal64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/libopenal64.so"));
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/libjinput-linux64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/libjinput-linux64.so"));
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/libjinput-linux.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/libjinput-linux.so"));
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/liblwjgl.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/liblwjgl.so"));
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/liblwjgl64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/liblwjgl64.so"));
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/libopenal.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/libopenal.so"));
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/libopenal64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/libopenal64.so"));
+						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/libjinput-linux64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/libjinput-linux64.so"));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
 	             }
 	             System.out.println("Version: " + dzversion + " Installed!");
     			 break;
@@ -325,7 +359,7 @@ class gui {
 	        	 
 	             try {
 	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever18b + ".zip", dzpath + "\\dangerzone_" + casever18b);
+	                 unzipper.unzip(dzpath + "/dangerzone_" + casever18b + ".zip", dzpath + "dangerzone_" + casever18b);
 	                 progressBar.setValue(progressBar.getValue() + 2);
 				     progressBar.update(progressBar.getGraphics());
 	             } catch (Exception ex) {
@@ -362,7 +396,7 @@ class gui {
 	        	 
 	             try {
 	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever18a + ".zip", dzpath + "\\dangerzone_" + casever18a);
+	                 unzipper.unzip(dzpath + "/dangerzone_" + casever18a + ".zip", dzpath + "dangerzone_" + casever18a);
 	                 progressBar.setValue(progressBar.getValue() + 2);
 				     progressBar.update(progressBar.getGraphics());
 	             } catch (Exception ex) {
@@ -399,7 +433,7 @@ class gui {
 	        	 
 	             try {
 	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever17 + ".zip", dzpath + "\\dangerzone_" + casever17);
+	                 unzipper.unzip(dzpath + "/dangerzone_" + casever17 + ".zip", dzpath + "dangerzone_" + casever17);
 	                 progressBar.setValue(progressBar.getValue() + 2);
 				     progressBar.update(progressBar.getGraphics());
 	             } catch (Exception ex) {
@@ -436,7 +470,7 @@ class gui {
 	        	 
 	             try {
 	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever17b + ".zip", dzpath + "\\dangerzone_" + casever17b);
+	                 unzipper.unzip(dzpath + "/dangerzone_" + casever17b + ".zip", dzpath + "dangerzone_" + casever17b);
 	                 progressBar.setValue(progressBar.getValue() + 2);
 				     progressBar.update(progressBar.getGraphics());
 	             } catch (Exception ex) {
@@ -473,7 +507,7 @@ class gui {
 	        	 
 	             try {
 	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever16 + ".zip", dzpath + "\\dangerzone_" + casever16);
+	                 unzipper.unzip(dzpath + "/dangerzone_" + casever16 + ".zip", dzpath + "dangerzone_" + casever16);
 	                 progressBar.setValue(progressBar.getValue() + 2);
 				     progressBar.update(progressBar.getGraphics());
 	             } catch (Exception ex) {
@@ -510,7 +544,7 @@ class gui {
 	        	 
 	             try {
 	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever10 + ".zip", dzpath + "\\dangerzone_" + casever10);
+	                 unzipper.unzip(dzpath + "/dangerzone_" + casever10 + ".zip", dzpath + "dangerzone_" + casever10);
 	                 progressBar.setValue(progressBar.getValue() + 2);
 				     progressBar.update(progressBar.getGraphics());
 	             } catch (Exception ex) {
@@ -547,7 +581,7 @@ class gui {
 	        	 
 	             try {
 	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever09 + ".zip", dzpath + "\\dangerzone_" + casever09);
+	                 unzipper.unzip(dzpath + "/dangerzone_" + casever09 + ".zip", dzpath + "dangerzone_" + casever09);
 	                 progressBar.setValue(progressBar.getValue() + 2);
 				     progressBar.update(progressBar.getGraphics());
 	             } catch (Exception ex) {
@@ -584,7 +618,7 @@ class gui {
 	        	 
 	             try {
 	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever08 + ".zip", dzpath + "\\dangerzone_" + casever08);
+	                 unzipper.unzip(dzpath + "/dangerzone_" + casever08 + ".zip", dzpath + "dangerzone_" + casever08);
 	                 progressBar.setValue(progressBar.getValue() + 2);
 				     progressBar.update(progressBar.getGraphics());
 	             } catch (Exception ex) {
@@ -614,9 +648,9 @@ class gui {
 		 case "2.1":
 		 String casever21 = ver21;
 			 
-			 Runtime rt = Runtime.getRuntime();
+			 Runtime.getRuntime();
 			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever21 + "\\StartDZ.bat");
+				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever21 + "/StartDZ.bat");
 				    PrintWriter printWriter = new PrintWriter(fileWriter);
 					    printWriter.print("@echo off \n");
 					    printWriter.print("cls \n");
@@ -626,7 +660,7 @@ class gui {
 					    printWriter.close();
 				 System.out.println("Launching Version: " + dzversion);
 				 //System.out.println("java -jar " + dzpath + "dangerzone_" + casever + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever21 + "\\StartDZ.bat");
+				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever21 + "/StartDZ.bat");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -638,7 +672,7 @@ class gui {
 		 String casever193 = ver193;
 			 
 			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever193 + "\\StartDZ.bat");
+				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever193 + "/StartDZ.bat");
 				    PrintWriter printWriter = new PrintWriter(fileWriter);
 					    printWriter.print("@echo off \n");
 					    printWriter.print("cls \n");
@@ -648,7 +682,7 @@ class gui {
 					    printWriter.close();
 				 System.out.println("Launching Version: " + dzversion);
 				 //System.out.println("java -jar " + dzpath + "dangerzone_" + casever1 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever193 + "\\StartDZ.bat");
+				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever193 + "/StartDZ.bat");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -660,7 +694,7 @@ class gui {
 		 String casever19 = ver19;
 			 
 			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever19 + "\\StartDZ.bat");
+				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever19 + "/StartDZ.bat");
 				    PrintWriter printWriter = new PrintWriter(fileWriter);
 					    printWriter.print("@echo off \n");
 					    printWriter.print("cls \n");
@@ -670,7 +704,7 @@ class gui {
 					    printWriter.close();
 				 System.out.println("Launching Version: " + dzversion);
 				 //System.out.println("java -jar " + dzpath + "dangerzone_" + casever2 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever19 + "\\StartDZ.bat");
+				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever19 + "/StartDZ.bat");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -682,7 +716,7 @@ class gui {
 		 String casever18b = ver18b;
 			 
 			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever18b + "\\StartDZ.bat");
+				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever18b + "/StartDZ.bat");
 				    PrintWriter printWriter = new PrintWriter(fileWriter);
 					    printWriter.print("@echo off \n");
 					    printWriter.print("cls \n");
@@ -692,7 +726,7 @@ class gui {
 					    printWriter.close();
 				 System.out.println("Launching Version: " + dzversion);
 				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever18b + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever18b + "\\StartDZ.bat");
+				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever18b + "/StartDZ.bat");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -704,7 +738,7 @@ class gui {
 		 String casever18a = ver18a;
 			 
 			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever18a + "\\StartDZ.bat");
+				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever18a + "/StartDZ.bat");
 				    PrintWriter printWriter = new PrintWriter(fileWriter);
 					    printWriter.print("@echo off \n");
 					    printWriter.print("cls \n");
@@ -714,7 +748,7 @@ class gui {
 					    printWriter.close();
 				 System.out.println("Launching Version: " + dzversion);
 				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever18a + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever18a + "\\StartDZ.bat");
+				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever18a + "/StartDZ.bat");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -726,7 +760,7 @@ class gui {
 		 String casever17 = ver17;
 			 
 			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever17 + "\\StartDZ.bat");
+				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever17 + "/StartDZ.bat");
 				    PrintWriter printWriter = new PrintWriter(fileWriter);
 					    printWriter.print("@echo off \n");
 					    printWriter.print("cls \n");
@@ -736,7 +770,7 @@ class gui {
 					    printWriter.close();
 				 System.out.println("Launching Version: " + dzversion);
 				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever17 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever17 + "\\StartDZ.bat");
+				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever17 + "/StartDZ.bat");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -748,7 +782,7 @@ class gui {
 		 String casever17b = ver17b;
 			 
 			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever17b + "\\StartDZ.bat");
+				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever17b + "/StartDZ.bat");
 				    PrintWriter printWriter = new PrintWriter(fileWriter);
 					    printWriter.print("@echo off \n");
 					    printWriter.print("cls \n");
@@ -758,7 +792,7 @@ class gui {
 					    printWriter.close();
 				 System.out.println("Launching Version: " + dzversion);
 				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever17b + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever17b + "\\StartDZ.bat");
+				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever17b + "/StartDZ.bat");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -770,7 +804,7 @@ class gui {
 		 String casever16 = ver16;
 			 
 			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever16 + "\\StartDZ.bat");
+				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever16 + "/StartDZ.bat");
 				    PrintWriter printWriter = new PrintWriter(fileWriter);
 					    printWriter.print("@echo off \n");
 					    printWriter.print("cls \n");
@@ -780,7 +814,7 @@ class gui {
 					    printWriter.close();
 				 System.out.println("Launching Version: " + dzversion);
 				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever16 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever16 + "\\StartDZ.bat");
+				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever16 + "/StartDZ.bat");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -792,7 +826,7 @@ class gui {
 		 String casever10 = ver10;
 			 
 			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever10 + "\\StartDZ.bat");
+				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever10 + "/StartDZ.bat");
 				    PrintWriter printWriter = new PrintWriter(fileWriter);
 					    printWriter.print("@echo off \n");
 					    printWriter.print("cls \n");
@@ -802,7 +836,7 @@ class gui {
 					    printWriter.close();
 				 System.out.println("Launching Version: " + dzversion);
 				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever10 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever10 + "\\StartDZ.bat");
+				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever10 + "/StartDZ.bat");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -814,7 +848,7 @@ class gui {
 		 String casever09 = ver09;
 			 
 			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever09 + "\\StartDZ.bat");
+				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever09 + "/StartDZ.bat");
 				    PrintWriter printWriter = new PrintWriter(fileWriter);
 					    printWriter.print("@echo off \n");
 					    printWriter.print("cls \n");
@@ -824,7 +858,7 @@ class gui {
 					    printWriter.close();
 				 System.out.println("Launching Version: " + dzversion);
 				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever09 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever09 + "\\StartDZ.bat");
+				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever09 + "/StartDZ.bat");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -836,7 +870,7 @@ class gui {
 		 String casever08 = ver08;
 			 
 			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever08 + "\\StartDZ.bat");
+				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever08 + "/StartDZ.bat");
 				    PrintWriter printWriter = new PrintWriter(fileWriter);
 					    printWriter.print("@echo off \n");
 					    printWriter.print("cls \n");
@@ -846,7 +880,7 @@ class gui {
 					    printWriter.close();
 				 System.out.println("Launching Version: " + dzversion);
 				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever08 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever08 + "\\StartDZ.bat");
+				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever08 + "/StartDZ.bat");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
