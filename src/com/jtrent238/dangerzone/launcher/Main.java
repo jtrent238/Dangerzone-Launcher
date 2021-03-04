@@ -4,42 +4,31 @@ package com.jtrent238.dangerzone.launcher;
 //even if you are working with just swings.
 import javax.swing.*;
 
+import com.jtrent238.dangerzone.launcher.util.InstallUtility;
+import com.jtrent238.dangerzone.launcher.util.RunUtility;
 import com.jtrent238.dangerzone.launcher.util.UnzipUtility;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Scanner;
 
-class gui {
+public class Main {
 	
 	//Get the operating system
 	
+	public static String launcher_version = "1.0.0.0";
 	
-    private static JEditorPane editor;
-    private static URL url;
+	public static JEditorPane editor;
+    public static URL url;
     public static String title = "DangerZone Launcher - By: jtrent238";
-	private static String URL = "https://dzarchive.jtrent238.tk";
+    public static String URL = "https://dzarchive.jtrent238.tk";
 	//private static String dzpath = System.getenv("APPDATA") + "\\DangerZone\\";
-	private static String dzpath = null;
+	public static String dzpath = null;
 	//private static String dzprop = dzpath + "\\" + "DangerZone.Properties";
 	public static String dzprop = null;
 	public static String playername = "Player";
@@ -48,17 +37,6 @@ class gui {
 	public static String crypted_password = null;
 	public static String dzlatest = "2.1";
 	
-	private static String dz_21 = "http://www.dangerzonegame.net/uploads/2/5/3/5/25358181/dangerzone_2.1.zip";
-	private static String dz_193 = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_1.9.3.zip";
-	private static String dz_19 = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_1.9.zip";
-	private static String dz_18b = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_1.8b.zip";
-	private static String dz_18a = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_1.8a.zip";
-	private static String dz_17 = "https://www.dropbox.com/s/qzue8fvgfhio9ol/dangerzone_1.7.zip?dl=1";
-	private static String dz_17b = "https://web.archive.org/web/20190209214509if_/http://server.jtrent238.tk:81/~jtrent238/DangerZoneFiles/DangerZone_1.7b.zip";
-	private static String dz_16 = "https://www.dropbox.com/s/i9rdykz6q5pfjv3/dangerzone_1.6.zip?dl=1";
-	private static String dz_10 = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_1.0.zip";
-	private static String dz_09 = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_0.9.zip";
-	private static String dz_08 = "http://dzarchive.jtrent238.tk/dzversions/dangerzone_0.8.zip";
 
 	private static String ver21 = "2.1";
 	private static String ver193 = "1.9.3";
@@ -71,11 +49,13 @@ class gui {
 	private static String ver10 = "1.0";
 	private static String ver09 = "0.9";
 	private static String ver08 = "0.8";
+	private static String ver007 = "0.0.7";
+	private static String ver0000003 = "0.0.0.0.0.0.3";
 	
   	 
-	static UnzipUtility unzipper = new UnzipUtility();
+	public static UnzipUtility unzipper = new UnzipUtility();
 	
-	static String[] dz_versions = { "Latest", "2.1", "1.9.3", "1.9", "1.8b", "1.8a", "1.7", "1.7b", "1.6", "1.0", "0.9", "0.8"};
+	static String[] dz_versions = { "Latest", "2.1", "1.9.3", "1.9", "1.8b", "1.8a", "1.7", "1.7b", "1.6", "1.0", "0.9", "0.8", "0.0.7", "0.0.0.0.0.0.3"};
 
  public static void main(String args[]) throws IOException {
 
@@ -86,7 +66,7 @@ class gui {
 		  }
 		  
 	 try {
-		 if(System.getProperty("os.name") != "Windows") {
+		 if(System.getProperty("os.name") != null) {
 			 dzpath = System.getProperty("user.home")  + "/DangerZone/";
 			 dzprop = dzpath + "DangerZone.Properties";
 		 }
@@ -200,432 +180,55 @@ class gui {
     		 switch(dzversion) {
     		 case "2.1":
     			String casever21 = ver21;
-    			 System.out.println("Downloading Version: " + dzversion);
-
-
-	        	 try (BufferedInputStream inputStream = new BufferedInputStream(new URL(dz_21).openStream());
-    					  FileOutputStream fileOS = new FileOutputStream(dzpath + "/dangerzone_" + casever21 + ".zip")) {
-		        		 HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-		        		 long fileSize = httpConnection.getContentLength();
-    					    byte data[] = new byte[1024];
-    					    int byteContent;
-    					    int fs = 0;
-    					    progressBar.setMaximum(42);
-    					    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-    					        fileOS.write(data, 0, byteContent);
-    					        fs++;
-    					        
-    					        progressBar.setValue((int) (fs/fileSize));
-    					        progressBar.update(progressBar.getGraphics());
-    					        //System.out.println((int) (fs/fileSize));
-    					    }
-    					    System.out.println("Version: " + dzversion + " Downloaded!");
-    					} catch (IOException e1) {
-    					    // handles IO exceptions
-    					}
-	        	 
-	        	 
-	             try {
-	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever21 + ".zip", dzpath + "\\dangerzone_" + casever21);
-	                 progressBar.setValue(progressBar.getValue() + 2);
-				     progressBar.update(progressBar.getGraphics());
-	             } catch (Exception ex) {
-	                 // some errors occurred
-	                 ex.printStackTrace();
-	             }
-	             System.out.println("Version: " + dzversion + " Installed!");
+    			InstallUtility.InstallDZ(casever21);
     			 break;
     		 case "1.9.3":
     			 String casever193 = ver193;
-    			 System.out.println("Downloading Version: " + dzversion);
-
-
-	        	 try (BufferedInputStream inputStream = new BufferedInputStream(new URL(dz_193).openStream());
-    					  FileOutputStream fileOS = new FileOutputStream(dzpath + "/dangerzone_" + casever193 + ".zip")) {
-		        		 HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-		        		 long fileSize = httpConnection.getContentLength();
-    					    byte data[] = new byte[1024];
-    					    int byteContent;
-    					    int fs = 0;
-    					    progressBar.setMaximum(42);
-    					    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-    					        fileOS.write(data, 0, byteContent);
-    					        fs++;
-    					        
-    					        progressBar.setValue((int) (fs/fileSize));
-    					        progressBar.update(progressBar.getGraphics());
-    					        //System.out.println((int) (fs/fileSize));
-    					    }
-    					    System.out.println("Version: " + dzversion + " Downloaded!");
-    					} catch (IOException e1) {
-    					    // handles IO exceptions
-    					}
-	        	 
-	        	 
-	             try {
-	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "dangerzone_" + casever193 + ".zip", dzpath + "\\dangerzone_" + casever193);
-	                 progressBar.setValue(progressBar.getValue() + 2);
-				     progressBar.update(progressBar.getGraphics());
-	             } catch (Exception ex) {
-	                 // some errors occurred
-	                 ex.printStackTrace();
-	             }
-	             System.out.println("Version: " + dzversion + " Installed!");
+    			 InstallUtility.InstallDZ(casever193);
     			 break;
     		 case "1.9":
 	    		String casever19 = ver19;	 
-    			 System.out.println("Downloading Version: " + dzversion);
-
-
-	        	 try (BufferedInputStream inputStream = new BufferedInputStream(new URL(dz_19).openStream());
-    					  FileOutputStream fileOS = new FileOutputStream(dzpath + "/dangerzone_" + casever19 + ".zip")) {
-		        		 HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-		        		 long fileSize = httpConnection.getContentLength();
-    					    byte data[] = new byte[1024];
-    					    int byteContent;
-    					    int fs = 0;
-    					    progressBar.setMaximum(42);
-    					    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-    					        fileOS.write(data, 0, byteContent);
-    					        fs++;
-    					        
-    					        progressBar.setValue((int) (fs/fileSize));
-    					        progressBar.update(progressBar.getGraphics());
-    					        //System.out.println((int) (fs/fileSize));
-    					    }
-    					    System.out.println("Version: " + dzversion + " Downloaded!");
-    					} catch (IOException e1) {
-    					    // handles IO exceptions
-    					}
-	        	 
-	        	 
-	             try {
-	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever19 + ".zip", dzpath + "dangerzone_" + casever19);
-	                 progressBar.setValue(progressBar.getValue() + 2);
-				     progressBar.update(progressBar.getGraphics());
-	             } catch (Exception ex) {
-	                 // some errors occurred
-	                 ex.printStackTrace();
-	             }
-	             if(System.getProperty("os.name") != "Windows") {
-	            	 try {
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/libjinput-linux.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/libjinput-linux.so"));
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/liblwjgl.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/liblwjgl.so"));
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/liblwjgl64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/liblwjgl64.so"));
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/libopenal.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/libopenal.so"));
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/libopenal64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/libopenal64.so"));
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/native/linux/libjinput-linux64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/DangerZone_lib/libjinput-linux64.so"));
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/libjinput-linux.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/libjinput-linux.so"));
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/liblwjgl.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/liblwjgl.so"));
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/liblwjgl64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/liblwjgl64.so"));
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/libopenal.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/libopenal.so"));
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/libopenal64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/libopenal64.so"));
-						Files.move (Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/native/linux/libjinput-linux64.so"), Paths.get(dzpath + "/dangerzone_" + casever19 + "/Launcher_lib/libjinput-linux64.so"));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} 
-	             }
-	             System.out.println("Version: " + dzversion + " Installed!");
+	    		InstallUtility.InstallDZ(casever19);
     			 break;
     		 case "1.8b":
 	    		String casever18b = ver18b;	 
-    			 System.out.println("Downloading Version: " + dzversion);
-
-	        	 try (BufferedInputStream inputStream = new BufferedInputStream(new URL(dz_18b).openStream());
-    					  FileOutputStream fileOS = new FileOutputStream(dzpath + "/dangerzone_" + casever18b + ".zip")) {
-		        		 HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-		        		 long fileSize = httpConnection.getContentLength();
-    					    byte data[] = new byte[1024];
-    					    int byteContent;
-    					    int fs = 0;
-    					    progressBar.setMaximum(42);
-    					    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-    					        fileOS.write(data, 0, byteContent);
-    					        fs++;
-    					        
-    					        progressBar.setValue((int) (fs/fileSize));
-    					        progressBar.update(progressBar.getGraphics());
-    					        //System.out.println((int) (fs/fileSize));
-    					    }
-    					    System.out.println("Version: " + dzversion + " Downloaded!");
-    					} catch (IOException e1) {
-    					    // handles IO exceptions
-    					}
-	        	 
-	        	 
-	             try {
-	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever18b + ".zip", dzpath + "dangerzone_" + casever18b);
-	                 progressBar.setValue(progressBar.getValue() + 2);
-				     progressBar.update(progressBar.getGraphics());
-	             } catch (Exception ex) {
-	                 // some errors occurred
-	                 ex.printStackTrace();
-	             }
-	             System.out.println("Version: " + dzversion + " Installed!");
+	    		InstallUtility.InstallDZ(casever18b);
     			 break;
     		 case "1.8a":
 	    		String casever18a = ver18a;	 
-    			 System.out.println("Downloading Version: " + dzversion);
-
-	        	 try (BufferedInputStream inputStream = new BufferedInputStream(new URL(dz_18a).openStream());
-    					  FileOutputStream fileOS = new FileOutputStream(dzpath + "/dangerzone_" + casever18a + ".zip")) {
-		        		 HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-		        		 long fileSize = httpConnection.getContentLength();
-    					    byte data[] = new byte[1024];
-    					    int byteContent;
-    					    int fs = 0;
-    					    progressBar.setMaximum(42);
-    					    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-    					        fileOS.write(data, 0, byteContent);
-    					        fs++;
-    					        
-    					        progressBar.setValue((int) (fs/fileSize));
-    					        progressBar.update(progressBar.getGraphics());
-    					        //System.out.println((int) (fs/fileSize));
-    					    }
-    					    System.out.println("Version: " + dzversion + " Downloaded!");
-    					} catch (IOException e1) {
-    					    // handles IO exceptions
-    					}
-	        	 
-	        	 
-	             try {
-	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever18a + ".zip", dzpath + "dangerzone_" + casever18a);
-	                 progressBar.setValue(progressBar.getValue() + 2);
-				     progressBar.update(progressBar.getGraphics());
-	             } catch (Exception ex) {
-	                 // some errors occurred
-	                 ex.printStackTrace();
-	             }
-	             System.out.println("Version: " + dzversion + " Installed!");
+	    		InstallUtility.InstallDZ(casever18a);
     			 break;
     		 case "1.7":
 	    		String casever17 = ver17;	 
-    			 System.out.println("Downloading Version: " + dzversion);
-
-	        	 try (BufferedInputStream inputStream = new BufferedInputStream(new URL(dz_17).openStream());
-    					  FileOutputStream fileOS = new FileOutputStream(dzpath + "/dangerzone_" + casever17 + ".zip")) {
-		        		 HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-		        		 long fileSize = httpConnection.getContentLength();
-    					    byte data[] = new byte[1024];
-    					    int byteContent;
-    					    int fs = 0;
-    					    progressBar.setMaximum(42);
-    					    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-    					        fileOS.write(data, 0, byteContent);
-    					        fs++;
-    					        
-    					        progressBar.setValue((int) (fs/fileSize));
-    					        progressBar.update(progressBar.getGraphics());
-    					        //System.out.println((int) (fs/fileSize));
-    					    }
-    					    System.out.println("Version: " + dzversion + " Downloaded!");
-    					} catch (IOException e1) {
-    					    // handles IO exceptions
-    					}
-	        	 
-	        	 
-	             try {
-	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever17 + ".zip", dzpath + "dangerzone_" + casever17);
-	                 progressBar.setValue(progressBar.getValue() + 2);
-				     progressBar.update(progressBar.getGraphics());
-	             } catch (Exception ex) {
-	                 // some errors occurred
-	                 ex.printStackTrace();
-	             }
-	             System.out.println("Version: " + dzversion + " Installed!");
+	    		InstallUtility.InstallDZ(casever17);
     			 break;
     		 case "1.7b":
 	    		String casever17b = ver17b;	 
-    			 System.out.println("Downloading Version: " + dzversion);
-
-	        	 try (BufferedInputStream inputStream = new BufferedInputStream(new URL(dz_17b).openStream());
-    					  FileOutputStream fileOS = new FileOutputStream(dzpath + "/dangerzone_" + casever17b + ".zip")) {
-		        		 HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-		        		 long fileSize = httpConnection.getContentLength();
-    					    byte data[] = new byte[1024];
-    					    int byteContent;
-    					    int fs = 0;
-    					    progressBar.setMaximum(42);
-    					    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-    					        fileOS.write(data, 0, byteContent);
-    					        fs++;
-    					        
-    					        progressBar.setValue((int) (fs/fileSize));
-    					        progressBar.update(progressBar.getGraphics());
-    					        //System.out.println((int) (fs/fileSize));
-    					    }
-    					    System.out.println("Version: " + dzversion + " Downloaded!");
-    					} catch (IOException e1) {
-    					    // handles IO exceptions
-    					}
-	        	 
-	        	 
-	             try {
-	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever17b + ".zip", dzpath + "dangerzone_" + casever17b);
-	                 progressBar.setValue(progressBar.getValue() + 2);
-				     progressBar.update(progressBar.getGraphics());
-	             } catch (Exception ex) {
-	                 // some errors occurred
-	                 ex.printStackTrace();
-	             }
-	             System.out.println("Version: " + dzversion + " Installed!");
+	    		InstallUtility.InstallDZ(casever17b);
     			 break;
     		 case "1.6":
 	    		String casever16 = ver16;	 
-    			 System.out.println("Downloading Version: " + dzversion);
-
-	        	 try (BufferedInputStream inputStream = new BufferedInputStream(new URL(dz_16).openStream());
-    					  FileOutputStream fileOS = new FileOutputStream(dzpath + "/dangerzone_" + casever16 + ".zip")) {
-		        		 HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-		        		 long fileSize = httpConnection.getContentLength();
-    					    byte data[] = new byte[1024];
-    					    int byteContent;
-    					    int fs = 0;
-    					    progressBar.setMaximum(42);
-    					    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-    					        fileOS.write(data, 0, byteContent);
-    					        fs++;
-    					        
-    					        progressBar.setValue((int) (fs/fileSize));
-    					        progressBar.update(progressBar.getGraphics());
-    					        //System.out.println((int) (fs/fileSize));
-    					    }
-    					    System.out.println("Version: " + dzversion + " Downloaded!");
-    					} catch (IOException e1) {
-    					    // handles IO exceptions
-    					}
-	        	 
-	        	 
-	             try {
-	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever16 + ".zip", dzpath + "dangerzone_" + casever16);
-	                 progressBar.setValue(progressBar.getValue() + 2);
-				     progressBar.update(progressBar.getGraphics());
-	             } catch (Exception ex) {
-	                 // some errors occurred
-	                 ex.printStackTrace();
-	             }
-	             System.out.println("Version: " + dzversion + " Installed!");
+	    		InstallUtility.InstallDZ(casever16);
     			 break;
     		 case "1.0":
 	    		String casever10 = ver10;	 
-    			 System.out.println("Downloading Version: " + dzversion);
-
-	        	 try (BufferedInputStream inputStream = new BufferedInputStream(new URL(dz_10).openStream());
-    					  FileOutputStream fileOS = new FileOutputStream(dzpath + "/dangerzone_" + casever10 + ".zip")) {
-		        		 HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-		        		 long fileSize = httpConnection.getContentLength();
-    					    byte data[] = new byte[1024];
-    					    int byteContent;
-    					    int fs = 0;
-    					    progressBar.setMaximum(42);
-    					    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-    					        fileOS.write(data, 0, byteContent);
-    					        fs++;
-    					        
-    					        progressBar.setValue((int) (fs/fileSize));
-    					        progressBar.update(progressBar.getGraphics());
-    					        //System.out.println((int) (fs/fileSize));
-    					    }
-    					    System.out.println("Version: " + dzversion + " Downloaded!");
-    					} catch (IOException e1) {
-    					    // handles IO exceptions
-    					}
-	        	 
-	        	 
-	             try {
-	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever10 + ".zip", dzpath + "dangerzone_" + casever10);
-	                 progressBar.setValue(progressBar.getValue() + 2);
-				     progressBar.update(progressBar.getGraphics());
-	             } catch (Exception ex) {
-	                 // some errors occurred
-	                 ex.printStackTrace();
-	             }
-	             System.out.println("Version: " + dzversion + " Installed!");
+	    		InstallUtility.InstallDZ(casever10);
     			 break;
     		 case "0.9":
 	    		String casever09 = ver09;	 
-    			 System.out.println("Downloading Version: " + dzversion);
-
-	        	 try (BufferedInputStream inputStream = new BufferedInputStream(new URL(dz_09).openStream());
-    					  FileOutputStream fileOS = new FileOutputStream(dzpath + "/dangerzone_" + casever09 + ".zip")) {
-		        		 HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-		        		 long fileSize = httpConnection.getContentLength();
-    					    byte data[] = new byte[1024];
-    					    int byteContent;
-    					    int fs = 0;
-    					    progressBar.setMaximum(42);
-    					    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-    					        fileOS.write(data, 0, byteContent);
-    					        fs++;
-    					        
-    					        progressBar.setValue((int) (fs/fileSize));
-    					        progressBar.update(progressBar.getGraphics());
-    					        //System.out.println((int) (fs/fileSize));
-    					    }
-    					    System.out.println("Version: " + dzversion + " Downloaded!");
-    					} catch (IOException e1) {
-    					    // handles IO exceptions
-    					}
-	        	 
-	        	 
-	             try {
-	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever09 + ".zip", dzpath + "dangerzone_" + casever09);
-	                 progressBar.setValue(progressBar.getValue() + 2);
-				     progressBar.update(progressBar.getGraphics());
-	             } catch (Exception ex) {
-	                 // some errors occurred
-	                 ex.printStackTrace();
-	             }
-	             System.out.println("Version: " + dzversion + " Installed!");
+	    		InstallUtility.InstallDZ(casever09);
     			 break;
     		 case "0.8":
 	    		String casever08 = ver08;	 
-    			 System.out.println("Downloading Version: " + dzversion);
-
-	        	 try (BufferedInputStream inputStream = new BufferedInputStream(new URL(dz_08).openStream());
-    					  FileOutputStream fileOS = new FileOutputStream(dzpath + "/dangerzone_" + casever08 + ".zip")) {
-		        		 HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-		        		 long fileSize = httpConnection.getContentLength();
-    					    byte data[] = new byte[1024];
-    					    int byteContent;
-    					    int fs = 0;
-    					    progressBar.setMaximum(42);
-    					    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-    					        fileOS.write(data, 0, byteContent);
-    					        fs++;
-    					        
-    					        progressBar.setValue((int) (fs/fileSize));
-    					        progressBar.update(progressBar.getGraphics());
-    					        //System.out.println((int) (fs/fileSize));
-    					    }
-    					    System.out.println("Version: " + dzversion + " Downloaded!");
-    					} catch (IOException e1) {
-    					    // handles IO exceptions
-    					}
-	        	 
-	        	 
-	             try {
-	            	 System.out.println("Installing Version: " + dzversion);
-	                 unzipper.unzip(dzpath + "/dangerzone_" + casever08 + ".zip", dzpath + "dangerzone_" + casever08);
-	                 progressBar.setValue(progressBar.getValue() + 2);
-				     progressBar.update(progressBar.getGraphics());
-	             } catch (Exception ex) {
-	                 // some errors occurred
-	                 ex.printStackTrace();
-	             }
-	             System.out.println("Version: " + dzversion + " Installed!");
+	    		InstallUtility.InstallDZ(casever08);
+    			 break;
+    		 case "0.0.7":
+    			String casever007 = ver007;	 
+ 	    		InstallUtility.InstallDZ(casever007);
+    			 break;
+    		 case "0.0.0.0.0.0.3":
+    			String casever0000003 = ver0000003;	 
+ 	    		InstallUtility.InstallDZ(casever0000003);
     			 break;
 			 default :
 				 break;
@@ -646,247 +249,56 @@ class gui {
     		 }
 		 switch(dzversion) {
 		 case "2.1":
-		 String casever21 = ver21;
-			 
-			 Runtime.getRuntime();
-			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever21 + "/StartDZ.bat");
-				    PrintWriter printWriter = new PrintWriter(fileWriter);
-					    printWriter.print("@echo off \n");
-					    printWriter.print("cls \n");
-					    printWriter.print("mode con: cols=15 lines=1 \n");
-					    printWriter.print("cd " + dzpath + "dangerzone_" + casever21 + " \n");
-					    printWriter.print("java -jar Launcher.jar");
-					    printWriter.close();
-				 System.out.println("Launching Version: " + dzversion);
-				 //System.out.println("java -jar " + dzpath + "dangerzone_" + casever + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever21 + "/StartDZ.bat");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "DangerZone Version: " + casever21 + " NOT Installed", "ERROR: " + title, JOptionPane.ERROR_MESSAGE);
-			}
-			 System.out.println("Version: " + dzversion + " Launched!");
+			 String casever21 = ver21;
+			 RunUtility.RunDZ(casever21);
 			 break;
 		 case "1.9.3":
-		 String casever193 = ver193;
-			 
-			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever193 + "/StartDZ.bat");
-				    PrintWriter printWriter = new PrintWriter(fileWriter);
-					    printWriter.print("@echo off \n");
-					    printWriter.print("cls \n");
-					    printWriter.print("mode con: cols=15 lines=1 \n");
-					    printWriter.print("cd " + dzpath + "dangerzone_" + casever193 + " \n");
-					    printWriter.print("java -jar Launcher.jar");
-					    printWriter.close();
-				 System.out.println("Launching Version: " + dzversion);
-				 //System.out.println("java -jar " + dzpath + "dangerzone_" + casever1 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever193 + "/StartDZ.bat");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "DangerZone Version: " + casever193 + " NOT Installed", "ERROR: " + title, JOptionPane.ERROR_MESSAGE);
-			}
-			 System.out.println("Version: " + dzversion + " Launched!");
+			 String casever193 = ver193;
+			 RunUtility.RunDZ(casever193);
 			 break;
 		 case "1.9":
-		 String casever19 = ver19;
-			 
-			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever19 + "/StartDZ.bat");
-				    PrintWriter printWriter = new PrintWriter(fileWriter);
-					    printWriter.print("@echo off \n");
-					    printWriter.print("cls \n");
-					    printWriter.print("mode con: cols=15 lines=1 \n");
-					    printWriter.print("cd " + dzpath + "dangerzone_" + casever19 + " \n");
-					    printWriter.print("java -jar Launcher.jar");
-					    printWriter.close();
-				 System.out.println("Launching Version: " + dzversion);
-				 //System.out.println("java -jar " + dzpath + "dangerzone_" + casever2 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever19 + "/StartDZ.bat");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "DangerZone Version: " + casever19 + " NOT Installed", "ERROR: " + title, JOptionPane.ERROR_MESSAGE);
-			}
-			 System.out.println("Version: " + dzversion + " Launched!");
+			 String casever19 = ver19;
+			 RunUtility.RunDZ(casever19);
 			 break;
 		 case "1.8b":
-		 String casever18b = ver18b;
-			 
-			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever18b + "/StartDZ.bat");
-				    PrintWriter printWriter = new PrintWriter(fileWriter);
-					    printWriter.print("@echo off \n");
-					    printWriter.print("cls \n");
-					    printWriter.print("mode con: cols=15 lines=1 \n");
-					    printWriter.print("cd " + dzpath + "dangerzone_" + casever18b + " \n");
-					    printWriter.print("java -jar Launcher.jar");
-					    printWriter.close();
-				 System.out.println("Launching Version: " + dzversion);
-				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever18b + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever18b + "/StartDZ.bat");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "DangerZone Version: " + casever18b + " NOT Installed", "ERROR: " + title, JOptionPane.ERROR_MESSAGE);
-			}
-			 System.out.println("Version: " + dzversion + " Launched!");
+			 String casever18b = ver18b;
+			 RunUtility.RunDZ(casever18b);
 			 break;
 		 case "1.8a":
-		 String casever18a = ver18a;
-			 
-			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever18a + "/StartDZ.bat");
-				    PrintWriter printWriter = new PrintWriter(fileWriter);
-					    printWriter.print("@echo off \n");
-					    printWriter.print("cls \n");
-					    printWriter.print("mode con: cols=15 lines=1 \n");
-					    printWriter.print("cd " + dzpath + "dangerzone_" + casever18a + " \n");
-					    printWriter.print("java -jar Launcher.jar");
-					    printWriter.close();
-				 System.out.println("Launching Version: " + dzversion);
-				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever18a + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever18a + "/StartDZ.bat");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "DangerZone Version: " + casever18a + " NOT Installed", "ERROR: " + title, JOptionPane.ERROR_MESSAGE);
-			}
-			 System.out.println("Version: " + dzversion + " Launched!");
+			 String casever18a = ver18a;
+			 RunUtility.RunDZ(casever18a);
 			 break;
 		 case "1.7":
-		 String casever17 = ver17;
-			 
-			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever17 + "/StartDZ.bat");
-				    PrintWriter printWriter = new PrintWriter(fileWriter);
-					    printWriter.print("@echo off \n");
-					    printWriter.print("cls \n");
-					    printWriter.print("mode con: cols=15 lines=1 \n");
-					    printWriter.print("cd " + dzpath + "dangerzone_" + casever17 + " \n");
-					    printWriter.print("java -jar Launcher.jar");
-					    printWriter.close();
-				 System.out.println("Launching Version: " + dzversion);
-				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever17 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever17 + "/StartDZ.bat");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "DangerZone Version: " + casever17 + " NOT Installed", "ERROR: " + title, JOptionPane.ERROR_MESSAGE);
-			}
-			 System.out.println("Version: " + dzversion + " Launched!");
+			 String casever17 = ver17;
+			 RunUtility.RunDZ(casever17);
 			 break;
 		 case "1.7b":
-		 String casever17b = ver17b;
-			 
-			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever17b + "/StartDZ.bat");
-				    PrintWriter printWriter = new PrintWriter(fileWriter);
-					    printWriter.print("@echo off \n");
-					    printWriter.print("cls \n");
-					    printWriter.print("mode con: cols=15 lines=1 \n");
-					    printWriter.print("cd " + dzpath + "dangerzone_" + casever17b + " \n");
-					    printWriter.print("java -jar Launcher.jar");
-					    printWriter.close();
-				 System.out.println("Launching Version: " + dzversion);
-				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever17b + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever17b + "/StartDZ.bat");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "DangerZone Version: " + casever17b + " NOT Installed", "ERROR: " + title, JOptionPane.ERROR_MESSAGE);
-			}
-			 System.out.println("Version: " + dzversion + " Launched!");
+			 String casever17b = ver17b;
+			 RunUtility.RunDZ(casever17b);
 			 break;
 		 case "1.6":
-		 String casever16 = ver16;
-			 
-			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever16 + "/StartDZ.bat");
-				    PrintWriter printWriter = new PrintWriter(fileWriter);
-					    printWriter.print("@echo off \n");
-					    printWriter.print("cls \n");
-					    printWriter.print("mode con: cols=15 lines=1 \n");
-					    printWriter.print("cd " + dzpath + "dangerzone_" + casever16 + " \n");
-					    printWriter.print("java -jar Launcher.jar");
-					    printWriter.close();
-				 System.out.println("Launching Version: " + dzversion);
-				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever16 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever16 + "/StartDZ.bat");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "DangerZone Version: " + casever16 + " NOT Installed", "ERROR: " + title, JOptionPane.ERROR_MESSAGE);
-			}
-			 System.out.println("Version: " + dzversion + " Launched!");
+			 String casever16 = ver16;
+			 RunUtility.RunDZ(casever16);
 			 break;
 		 case "1.0":
-		 String casever10 = ver10;
-			 
-			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever10 + "/StartDZ.bat");
-				    PrintWriter printWriter = new PrintWriter(fileWriter);
-					    printWriter.print("@echo off \n");
-					    printWriter.print("cls \n");
-					    printWriter.print("mode con: cols=15 lines=1 \n");
-					    printWriter.print("cd " + dzpath + "dangerzone_" + casever10 + " \n");
-					    printWriter.print("java -jar Launcher.jar");
-					    printWriter.close();
-				 System.out.println("Launching Version: " + dzversion);
-				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever10 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever10 + "/StartDZ.bat");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "DangerZone Version: " + casever10 + " NOT Installed", "ERROR: " + title, JOptionPane.ERROR_MESSAGE);
-			}
-			 System.out.println("Version: " + dzversion + " Launched!");
+			 String casever10 = ver10;
+			 RunUtility.RunDZ(casever10);
 			 break;
 		 case "0.9":
-		 String casever09 = ver09;
-			 
-			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever09 + "/StartDZ.bat");
-				    PrintWriter printWriter = new PrintWriter(fileWriter);
-					    printWriter.print("@echo off \n");
-					    printWriter.print("cls \n");
-					    printWriter.print("mode con: cols=15 lines=1 \n");
-					    printWriter.print("cd " + dzpath + "dangerzone_" + casever09 + " \n");
-					    printWriter.print("java -jar Launcher.jar");
-					    printWriter.close();
-				 System.out.println("Launching Version: " + dzversion);
-				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever09 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever09 + "/StartDZ.bat");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "DangerZone Version: " + casever09 + " NOT Installed", "ERROR: " + title, JOptionPane.ERROR_MESSAGE);
-			}
-			 System.out.println("Version: " + dzversion + " Launched!");
+			 String casever09 = ver09;
+			 RunUtility.RunDZ(casever09);
 			 break;
 		 case "08":
-		 String casever08 = ver08;
-			 
-			 try {
-				 FileWriter fileWriter = new FileWriter(dzpath + "dangerzone_" + casever08 + "/StartDZ.bat");
-				    PrintWriter printWriter = new PrintWriter(fileWriter);
-					    printWriter.print("@echo off \n");
-					    printWriter.print("cls \n");
-					    printWriter.print("mode con: cols=15 lines=1 \n");
-					    printWriter.print("cd " + dzpath + "dangerzone_" + casever08 + " \n");
-					    printWriter.print("java -jar Launcher.jar");
-					    printWriter.close();
-				 System.out.println("Launching Version: " + dzversion);
-				 System.out.println("java -jar " + dzpath + "dangerzone_" + casever08 + "\\Launcher.jar");
-				 Runtime.getRuntime().exec(dzpath + "dangerzone_" + casever08 + "/StartDZ.bat");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "DangerZone Version: " + casever08 + " NOT Installed", "ERROR: " + title, JOptionPane.ERROR_MESSAGE);
-			}
-			 System.out.println("Version: " + dzversion + " Launched!");
+			 String casever08 = ver08;
+			 RunUtility.RunDZ(casever08);
+			 break;
+		 case "0.0.7":
+			String casever007 = ver007;	 
+			RunUtility.RunDZ(casever007);
+			 break;
+		 case "0.0.0.0.0.0.3":
+			String casever0000003 = ver0000003;	 
+			RunUtility.RunDZ(casever0000003);
 			 break;
 		 default :
 			 break;
